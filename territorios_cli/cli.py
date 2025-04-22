@@ -2,7 +2,7 @@ import argparse
 
 from territorios_cli.api.ibge_api import buscar_api_por_id, buscar_api_por_nome
 from territorios_cli.db.sqlite_handler import buscar_territorio_id, buscar_territorio_nome
-
+from territorios_cli.plot.plotter import gerar_grafico_dimensao, gerar_grafico_comparacao 
 
 def obter_dados_territorio(valor):
     try:
@@ -35,7 +35,21 @@ def run_cli():
     args = parser.parse_args()
 
     if args.comando == "dimensao":
-        print(f"[DEBUG] Consultar dimensão do território: {args.territorio}")
-    
+        dados = obter_dados_territorio(args.territorio)
+        if dados:
+            _, nome, dimensao = dados
+            path = gerar_grafico_dimensao(nome, dimensao)
+            print(f"Nome: {nome}\n Dimensão: {dimensao:.2f} km²z\n Gráfico: {path}")
+        #print(f"[DEBUG] Consultar dimensão do território: {args.territorio}")
+
     elif args.comando == "diferenca":
-        print(f"[DEBUG] Comparar territórios: {args.t1} x {args.t2}")
+        dados1 = obter_dados_territorio(args.t1)
+        dados2 = obter_dados_territorio(args.t2)
+        if dados1 and dados2:
+            _, nome1, dim1 = dados1
+            _, nome2, dim2 = dados2
+            diff = abs(dim1 - dim2)
+            path = gerar_grafico_comparacao(nome1, dim1, nome2, dim2)
+            print(f"{nome1}: {dim1:.2f} km²\n {nome2}: {dim2:.2f} km²")
+            print(f"Diferença: {diff:.2f} km² \n Gráfico: {path}")
+        #print(f"[DEBUG] Comparar territórios: {args.t1} x {args.t2}")
