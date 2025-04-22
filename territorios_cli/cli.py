@@ -1,5 +1,24 @@
 import argparse
 
+from territorios_cli.api.ibge_api import buscar_api_por_id, buscar_api_por_nome
+from territorios_cli.db.sqlite_handler import buscar_territorio_id, buscar_territorio_nome
+
+
+def obter_dados_territorio(valor):
+    try:
+        if valor.isdigit():
+            dados = buscar_territorio_id(int(valor))
+            if not dados:
+                dados = buscar_api_por_id(int(valor))
+        else:
+            dados = buscar_api_por_nome(valor)
+            if not dados:
+                dados = buscar_api_por_nome(valor)
+        return dados
+    except Exception as e:
+        print(f"Erro ao obter dados do território {e}")
+        return None
+
 def run_cli():
     parser = argparse.ArgumentParser(description="Análise de dimensão de territórios brasileiros")
     subparsers = parser.add_subparsers(dest="comando", required=True)
