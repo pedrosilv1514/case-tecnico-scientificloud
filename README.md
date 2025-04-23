@@ -84,12 +84,10 @@ python -m territorios_cli.cli diferenca --t1 "Acre" --t2 "Amazonas"
 ### 3. Salvar o gráfico em um caminho específico (ex: Downloads)
 
 ```bash
-python -m territorios_cli.cli dimensao --territorio "Acre" --output C:/Users/user_nanme/Downloads
+python -m territorios_cli.cli dimensao --territorio "Acre" --output "C:/Users/user_nanme/Downloads"
 ```
 
 ## Observações
-
-- Espaços nos nomes dos territórios são tratados automaticamente.
 
 - Caso o caminho do --output seja inválido ou não fornecido, o arquivo será salvo na pasta outputs/.
 
